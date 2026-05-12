@@ -169,46 +169,43 @@
 
 % ── Abstract ─────────────────────────────────────────────────────────────────
 \begin{abstract}
-This report presents the design, architecture, and full implementation of a
-\textbf{Warehouse Inventory Management System} --- a networked, multi-user desktop
-application developed as the final project for CS6103: Introduction to Java.
-The system addresses a real-world warehouse operations problem: multiple staff members
-and administrators must be able to view and modify shared inventory data simultaneously,
-from separate machines, with the guarantee that no two concurrent updates can corrupt
-the stock figures or produce an inconsistent database state.
+This report describes the design and implementation of a \textbf{Warehouse Inventory
+Management System} --- a networked, multi-user desktop application built as the final
+project for CS6103: Introduction to Java. The system addresses a practical warehouse
+operations problem: multiple staff members and administrators need to view and update
+shared inventory data simultaneously from separate machines, with the guarantee that
+concurrent writes never corrupt stock figures or produce an inconsistent database state.
 
-The application is built entirely in Java and structured as a strict three-tier
-architecture. The \textbf{presentation tier} is a JavaFX~21 graphical desktop client
-that provides a tabbed interface covering a live dashboard (KPI cards, category pie
-chart, top-stock bar chart, and an activity feed), a searchable and filterable product
-inventory table, a dedicated stock-operations panel for receiving and shipping goods, a
-low-stock alert view with an inline restock shortcut, a full transaction-history log,
-and CSV export for both inventory and audit data. The \textbf{application tier} is a
-Java TCP server that accepts multiple simultaneous client connections, each handled on
-its own thread, and exposes a clean 14-verb wire protocol built on serialised Java
-objects. After every successful stock mutation the server broadcasts a push event to all
-subscribed clients so every open UI refreshes automatically without polling. The
-\textbf{data tier} is a SQLite database accessed via JDBC with WAL journal mode enabled,
-giving concurrent read access while a write transaction is in progress.
+The application follows a three-tier architecture implemented entirely in Java. The
+\textbf{presentation tier} is a JavaFX~21 desktop client with a sidebar-navigated
+interface that includes a live dashboard showing KPI cards, a category pie chart, a
+top-stock bar chart, and a real-time activity feed; a searchable and filterable product
+inventory table with full CRUD dialogs; a dedicated stock-operations panel for receiving
+and shipping goods; a low-stock alert view with an inline restock shortcut; a
+transaction-history log with colour-coded action badges; and CSV export for both
+inventory snapshots and audit records. The \textbf{application tier} is a Java TCP
+server that accepts multiple simultaneous client connections --- each served by its own
+thread --- and exposes a 14-verb wire protocol built on serialised Java objects. After
+every successful mutation the server broadcasts a push event to all subscribed clients,
+keeping every open UI current without polling. The \textbf{data tier} is an SQLite
+database accessed through JDBC with WAL journal mode, allowing reads to proceed
+concurrently with an in-flight write transaction.
 
-Product management supports full CRUD operations restricted to administrator accounts.
-Stock operations --- add (receiving), remove (shipping), and absolute adjust
-(cycle-count correction) --- are available to both roles and are each recorded
-atomically in an immutable audit transaction log that stores the quantity delta,
-resulting quantity, performer identity, timestamp, and a freetext reason field.
-Role-based access control distinguishes \texttt{ADMIN} from \texttt{STAFF} accounts;
-passwords are stored as salted SHA-256 hashes and verified in constant time to prevent
-timing-oracle attacks.
+Product management (create, read, update, delete) is restricted to
+\texttt{ADMIN} accounts. Stock operations --- add, remove, and absolute
+cycle-count adjust --- are available to both \texttt{ADMIN} and \texttt{STAFF} and
+are each recorded in an immutable audit log that captures the quantity delta, resulting
+quantity, performer identity, timestamp, and a freetext reason. Passwords are stored as
+salted SHA-256 hashes and verified in constant time to prevent timing-oracle attacks.
 
-The central correctness challenge identified in the project proposal --- two clients
-racing to deduct the last unit of a product --- is solved with a two-layer defence: a
-per-product \texttt{ReentrantLock} held in a \texttt{ConcurrentHashMap} serialises
-in-process writes to the same product, and a JDBC transaction with an in-transaction
-re-read of the current quantity enforces the non-negative stock invariant at the
-database level. This design is verified by an included automated stress test that races
-15 client threads against 50 units and confirms that exactly 50 deductions succeed,
-none are duplicated, and the final stock reaches zero. A separate end-to-end
-verification suite exercises all 29 proposal requirements and reports 29/29 passing
+The central correctness challenge from the project proposal --- two clients racing to
+deduct the last unit of a product --- is solved with a two-layer defence: a per-product
+\texttt{ReentrantLock} serialises in-process writes to the same product, while a JDBC
+transaction with an in-transaction re-read of the current quantity enforces the
+non-negative stock invariant at the database level. An automated concurrency stress test
+races 15 client threads against 50 units and confirms that exactly 50 deductions
+succeed with zero double-deductions and a final stock of zero. A separate end-to-end
+verification suite covers all 29 project-proposal requirements and reports 29/29 passing
 checks.
 \end{abstract}
 
