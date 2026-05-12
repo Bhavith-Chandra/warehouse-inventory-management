@@ -1,0 +1,30 @@
+# Compiled class files
+bin/
+
+# SQLite database (runtime-generated)
+data/*.db
+data/*.db-wal
+data/*.db-shm
+data/server.pid
+
+# JavaFX SDK — large (~117 MB), download separately from
+# https://gluonhq.com/products/javafx/  (version 21.0.5, macOS / Windows / Linux)
+lib/javafx-sdk-21.0.5/
+
+# Build artifacts
+*.class
+
+# macOS
+.DS_Store
+
+# Eclipse project metadata
+.settings/
+*.launch
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+# Logs
+*.log
