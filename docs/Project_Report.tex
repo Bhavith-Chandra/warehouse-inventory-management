@@ -1,0 +1,617 @@
+\documentclass[12pt,a4paper]{article}
+
+% ── Packages ──────────────────────────────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{abstract}
+\usepackage{mdframed}
+\usepackage{float}
+
+% ── Colours ───────────────────────────────────────────────────────────────────
+\definecolor{navyblue}{HTML}{1e2a45}
+\definecolor{accentblue}{HTML}{2563eb}
+\definecolor{lightgray}{HTML}{f1f5f9}
+\definecolor{midgray}{HTML}{64748b}
+\definecolor{darkgray}{HTML}{1e293b}
+\definecolor{codeblue}{HTML}{1d4ed8}
+\definecolor{codebg}{HTML}{f8fafc}
+\definecolor{borderblue}{HTML}{bfdbfe}
+\definecolor{successgreen}{HTML}{16a34a}
+\definecolor{warnred}{HTML}{dc2626}
+
+% ── Hyperlinks ────────────────────────────────────────────────────────────────
+\hypersetup{
+  colorlinks=true,
+  linkcolor=accentblue,
+  urlcolor=accentblue,
+  citecolor=accentblue,
+  pdftitle={Warehouse Inventory Management System -- Project Report},
+  pdfauthor={Bhavith Chandra},
+  pdfsubject={CS6103 Final Project},
+}
+
+% ── Section styling ───────────────────────────────────────────────────────────
+\titleformat{\section}
+  {\large\bfseries\color{navyblue}}
+  {\thesection.}{0.6em}{}
+  [\color{accentblue}\titlerule]
+
+\titleformat{\subsection}
+  {\normalsize\bfseries\color{darkgray}}
+  {\thesubsection}{0.6em}{}
+
+\titlespacing{\section}{0pt}{18pt}{8pt}
+\titlespacing{\subsection}{0pt}{10pt}{4pt}
+
+% ── Listings (code blocks) ────────────────────────────────────────────────────
+\lstdefinestyle{javastyle}{
+  language=Java,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{accentblue}\bfseries,
+  commentstyle=\color{midgray}\itshape,
+  stringstyle=\color{successgreen},
+  numberstyle=\tiny\color{midgray},
+  backgroundcolor=\color{codebg},
+  frame=single,
+  framerule=0.4pt,
+  rulecolor=\color{borderblue},
+  numbers=left,
+  numbersep=8pt,
+  breaklines=true,
+  captionpos=b,
+  showstringspaces=false,
+  tabsize=4,
+  xleftmargin=14pt,
+}
+
+\lstdefinestyle{shell}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  frame=single,
+  framerule=0.4pt,
+  rulecolor=\color{borderblue},
+  breaklines=true,
+  captionpos=b,
+  xleftmargin=14pt,
+}
+
+\lstset{style=javastyle}
+
+% ── Header / Footer ───────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{accentblue}\leaders\hrule height \headrulewidth\hfill}}
+\fancyhead[L]{\small\color{midgray}Warehouse Inventory Management System}
+\fancyhead[R]{\small\color{midgray}CS6103 --- Final Project Report}
+\fancyfoot[C]{\small\color{midgray}\thepage}
+
+% ── Info box ──────────────────────────────────────────────────────────────────
+\newmdenv[
+  backgroundcolor=codebg,
+  linecolor=accentblue,
+  linewidth=1pt,
+  leftmargin=0pt,
+  rightmargin=0pt,
+  innerleftmargin=10pt,
+  innerrightmargin=10pt,
+  innertopmargin=8pt,
+  innerbottommargin=8pt,
+]{infobox}
+
+% ── Result box ────────────────────────────────────────────────────────────────
+\newmdenv[
+  backgroundcolor=codebg,
+  linecolor=successgreen,
+  linewidth=1.5pt,
+  leftline=true,
+  rightline=false,
+  topline=false,
+  bottomline=false,
+  leftmargin=0pt,
+  rightmargin=0pt,
+  innerleftmargin=12pt,
+  innerrightmargin=10pt,
+  innertopmargin=6pt,
+  innerbottommargin=6pt,
+]{resultbox}
+
+% ── Document ──────────────────────────────────────────────────────────────────
+\begin{document}
+
+% ── Title page ────────────────────────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+
+  {\Huge\bfseries\color{navyblue} Warehouse Inventory\\[6pt] Management System\par}
+  \vspace{0.4cm}
+  {\large\color{accentblue}\rule{0.6\linewidth}{1.5pt}\par}
+  \vspace{0.4cm}
+  {\large\color{midgray} Final Project Report\par}
+
+  \vspace{2.5cm}
+
+  \begin{center}
+    \begin{tabular}{rl}
+      \textbf{Course}    & CS6103 --- Introduction to Java \\[4pt]
+      \textbf{Semester}  & Spring 2026 \\[4pt]
+      \textbf{Student}   & Bhavith Chandra \\[4pt]
+      \textbf{Net ID}    & bc4066 \\[4pt]
+      \textbf{Repository}& \href{https://github.com/Bhavith-Chandra/warehouse-inventory-management}%
+                              {\texttt{github.com/Bhavith-Chandra/warehouse-inventory-management}}
+    \end{tabular}
+  \end{center}
+
+  \vfill
+  {\small\color{midgray}\today}
+\end{titlepage}
+
+% ── Table of Contents ─────────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ── Abstract ─────────────────────────────────────────────────────────────────
+\begin{abstract}
+This report presents the design and implementation of a multi-user Warehouse Inventory
+Management System developed as a final project for CS6103. The system follows a
+three-tier client-server architecture built entirely in Java, using TCP sockets for
+networking, JavaFX~21 for the graphical user interface, and SQLite for persistent
+storage. A central focus of the implementation is correctness under concurrency: the
+system guarantees that two clients attempting to deduct the last unit of a product
+simultaneously will never produce a double-deduction---a property proven by an automated
+stress test included with the submission. All 29 automated end-to-end verification checks
+pass.
+\end{abstract}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Introduction}
+% ─────────────────────────────────────────────────────────────────────────────
+
+Modern warehouses require real-time, multi-user access to inventory data. Staff need to
+log stock movements instantly, managers need accurate stock levels at a glance, and the
+system must remain consistent even when multiple users act simultaneously. This project
+builds a fully functional desktop application that satisfies all of these requirements
+using the core Java technologies covered in CS6103.
+
+The system delivers the following capabilities:
+
+\begin{itemize}[leftmargin=1.4em]
+  \item Real-time product catalogue management (create, read, update, delete)
+  \item Stock-level tracking via add, remove, and absolute-adjust operations
+  \item Automatic low-stock alerting with inline restock shortcuts
+  \item A full, immutable audit transaction log with timestamps and performer tracking
+  \item Role-based access control (\texttt{ADMIN} vs.\ \texttt{STAFF})
+  \item Live push-event updates so all connected clients refresh automatically
+  \item CSV export of both inventory and transaction history
+\end{itemize}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{System Architecture}
+% ─────────────────────────────────────────────────────────────────────────────
+
+The application is structured as a strict three-tier architecture that isolates
+presentation, business logic, and persistence.
+
+\subsection{Tier 1 --- Presentation (JavaFX Client)}
+
+The client is a JavaFX~21 desktop application (\texttt{InventoryClient.java}).
+It contains no business logic; every user action is serialised into a
+\texttt{Request} object and transmitted over a TCP socket. The UI runs entirely
+on the JavaFX Application Thread; all network I/O runs on daemon background
+threads, and results are marshalled back to the UI via
+\texttt{Platform.runLater()}.
+
+\subsection{Tier 2 --- Application Server (Java TCP Server)}
+
+\texttt{InventoryServer} opens a \texttt{ServerSocket} on port~5555 and spawns
+one \texttt{Thread(ClientHandler)} per accepted connection. \texttt{ClientHandler}
+reads \texttt{Request} objects, dispatches them to \texttt{InventoryService} (the
+business-logic layer), and writes \texttt{Response} objects back. After every
+successful mutation the server broadcasts a push event to all subscribed clients so
+their UIs refresh without polling.
+
+\subsection{Tier 3 --- Data Layer (SQLite via JDBC)}
+
+\texttt{DatabaseManager} owns a single JDBC \texttt{Connection} to an SQLite file
+(\texttt{data/warehouse.db}). WAL (Write-Ahead Logging) journal mode is enabled so
+concurrent reads never block an in-progress write. The schema comprises three tables:
+\texttt{users}, \texttt{products}, and \texttt{transactions}.
+
+\subsection{Wire Protocol}
+
+All messages are Java-serialised objects. \texttt{Request} carries a \texttt{Type}
+enum (14 verbs: \texttt{LOGIN}, \texttt{LIST\_PRODUCTS}, \texttt{ADD\_STOCK},
+\texttt{REMOVE\_STOCK}, etc.), a parameter \texttt{Map<String,Object>}, and a
+\texttt{requestId = System.nanoTime()}. \texttt{Response} carries a \texttt{Status}
+enum (\texttt{OK} / \texttt{ERROR} / \texttt{EVENT}), a payload, and the matching
+\texttt{requestId}. The client's \texttt{ServerConnection} correlates incoming
+responses to outstanding \texttt{CompletableFuture}s by \texttt{requestId},
+enabling fully asynchronous networking over a single socket without blocking the UI
+thread.
+
+\begin{figure}[H]
+\centering
+\begin{infobox}
+\begin{lstlisting}[style=shell,numbers=none,basicstyle=\ttfamily\footnotesize]
++------------------+    TCP / Serialisation    +------------------+
+|  JavaFX Client   | <-----------------------> | InventoryServer  |
+| InventoryClient  |                           |   (port 5555)    |
++------------------+                           +--------+---------+
+                                                        | one Thread per client
+                                          +-------------+-------------+
+                                     ClientHandler  ClientHandler  ClientHandler
+                                          |
+                                 +--------v---------+
+                                 | InventoryService | ReentrantLock + JDBC tx
+                                 +--------+---------+
+                                          |
+                                 +--------v---------+
+                                 |  DatabaseManager | SQLite WAL
+                                 +------------------+
+\end{lstlisting}
+\end{infobox}
+\caption{High-level architecture diagram}
+\end{figure}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Concurrency Design}
+% ─────────────────────────────────────────────────────────────────────────────
+
+The headline correctness property from the project proposal is:
+
+\begin{quote}
+\textit{``If two users try to deduct the last unit of a product at the same time,
+only one should succeed.''}
+\end{quote}
+
+\texttt{InventoryService.adjustStock()} enforces this with a two-layer defence.
+
+\subsection{Layer 1 --- Per-Product \texttt{ReentrantLock}}
+
+A \texttt{ConcurrentHashMap<Integer, ReentrantLock>} maps each product ID to its
+own lock. Every stock mutation acquires the lock for \emph{that} product before
+performing any I/O. Writes to different products proceed in parallel; writes to the
+\emph{same} product are strictly serialised within the JVM.
+
+\subsection{Layer 2 --- JDBC Transaction}
+
+Inside the lock the code:
+
+\begin{enumerate}[leftmargin=1.6em]
+  \item Calls \texttt{setAutoCommit(false)} to open a transaction.
+  \item Re-reads the current quantity from the database \emph{inside the same
+        transaction} (preventing stale cached values from leaking through).
+  \item Validates the business rule: \texttt{quantity + delta >= 0}; throws
+        \texttt{InsufficientStockException} otherwise.
+  \item Applies the \texttt{UPDATE products SET quantity = ?}.
+  \item Writes an audit row to \texttt{transactions}.
+  \item Calls \texttt{commit()}. On any exception, \texttt{safeRollback()} is called.
+\end{enumerate}
+
+The database schema also enforces \texttt{CHECK (quantity >= 0)} as a final
+safety net at the storage layer.
+
+\subsection{Why Two Layers?}
+
+The database constraint alone would allow both clients to \emph{attempt} the
+deduction; one would receive a confusing \texttt{SQLException} from the
+\texttt{CHECK} violation. The application-level \texttt{ReentrantLock} ensures
+that exactly one client gets a clean \textit{``Insufficient stock''} message and
+the other a successful response---the behaviour users and downstream systems
+expect.
+
+\begin{lstlisting}[style=javastyle, caption={Core of \texttt{adjustStock()} --- two-layer concurrency guard}]
+ReentrantLock lock = lockFor(productId);
+lock.lock();
+try {
+    synchronized (db) {
+        Connection c = db.getConnection();
+        c.setAutoCommit(false);
+        try {
+            // Re-read inside transaction to prevent stale reads
+            int current = readQuantity(c, productId);
+            int next    = current + delta;
+            if (next < 0)
+                throw new InsufficientStockException(...);
+
+            updateQuantity(c, productId, next);
+            writeAuditLog(c, productId, delta, next, performedBy, reason);
+            c.commit();
+        } catch (Exception e) {
+            safeRollback(c);
+            throw e;
+        }
+    }
+} finally {
+    lock.unlock();
+}
+\end{lstlisting}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Authentication and Security}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\subsection{Password Storage}
+
+Passwords are stored as salted SHA-256 hashes using \texttt{PasswordHasher.java}.
+The on-disk format is:
+
+\begin{center}
+  \texttt{base64(salt) : base64(SHA-256(salt || password))}
+\end{center}
+
+Constant-time comparison (\texttt{MessageDigest.isEqual}) is used during
+verification to prevent timing-oracle attacks.
+
+\subsection{Role-Based Access Control}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{Role} & \textbf{Permitted Operations} & \textbf{Denied Operations} \\
+\midrule
+\texttt{ADMIN} & Full access (CRUD + stock + log) & --- \\
+\texttt{STAFF} & Stock operations, read-only views & Create/update/delete products \\
+\bottomrule
+\end{tabular}
+\caption{Role permissions}
+\end{table}
+
+Role checks are enforced in \texttt{ClientHandler.requireRole()} before every
+admin-only operation. The server also enforces a login-first protocol: any request
+other than \texttt{LOGIN} before authentication is rejected with
+\textit{``Not authenticated; LOGIN required first.''}.
+
+\subsection{Default Credentials (First Run)}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{Username} & \textbf{Password} & \textbf{Role} \\
+\midrule
+\texttt{admin} & \texttt{admin123} & \texttt{ADMIN} \\
+\texttt{staff} & \texttt{staff123} & \texttt{STAFF} \\
+\bottomrule
+\end{tabular}
+\caption{Seeded default credentials}
+\end{table}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Implementation Overview}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\subsection{Server-Side Classes}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{lX}
+\toprule
+\textbf{Class} & \textbf{Responsibility} \\
+\midrule
+\texttt{InventoryServer}    & \texttt{ServerSocket} accept loop; handler registry; broadcast engine \\
+\texttt{ClientHandler}      & Per-connection request dispatch; \texttt{writeLock} for thread-safe socket writes \\
+\texttt{InventoryService}   & All business logic; concurrency guards; JDBC transaction management \\
+\texttt{DatabaseManager}    & Schema creation; WAL/FK PRAGMAs; single JDBC connection lifetime \\
+\bottomrule
+\end{tabularx}
+\caption{Server-side classes}
+\end{table}
+
+\subsection{Client-Side Classes}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{lX}
+\toprule
+\textbf{Class} & \textbf{Responsibility} \\
+\midrule
+\texttt{InventoryClient}    & JavaFX Application; sidebar navigation; keyboard shortcuts \\
+\texttt{ServerConnection}   & Async socket I/O; CompletableFuture correlation; event dispatch \\
+\texttt{DashboardView}      & KPI cards, PieChart by category, BarChart top-10, activity feed \\
+\texttt{InventoryView}      & Searchable/filterable TableView; Add/Remove Stock dialogs \\
+\texttt{StockOpsView}       & Dedicated receive/ship/cycle-count panel with live stock preview \\
+\texttt{LowStockView}       & Auto-filtered low-stock list with one-click Restock button \\
+\texttt{HistoryView}        & Transaction audit log; colour-coded action badges; CSV export \\
+\bottomrule
+\end{tabularx}
+\caption{Client-side classes}
+\end{table}
+
+\subsection{Shared / Utility Classes}
+
+\begin{itemize}[leftmargin=1.4em]
+  \item \texttt{model/} --- \texttt{Product}, \texttt{TransactionLog}, \texttt{User}
+        (\texttt{Serializable} domain objects transported over the wire)
+  \item \texttt{protocol/} --- \texttt{Request} (14-verb \texttt{Type} enum),
+        \texttt{Response} (\texttt{Status} + \texttt{EventType} enums)
+  \item \texttt{util/PasswordHasher} --- salted SHA-256 hash and verify
+\end{itemize}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Testing and Verification}
+% ─────────────────────────────────────────────────────────────────────────────
+
+Two automated test programs are included under \texttt{src/com/warehouse/test/}.
+
+\subsection{\texttt{ProposalVerify.java} --- End-to-End Verification}
+
+Connects to a live server and exercises every project-proposal requirement through
+29 automated checks covering:
+
+\begin{itemize}[leftmargin=1.4em]
+  \item All six CRUD operations (\texttt{ADD\_PRODUCT}, \texttt{LIST\_PRODUCTS},
+        \texttt{SEARCH\_PRODUCTS}, \texttt{GET\_PRODUCT}, \texttt{UPDATE\_PRODUCT},
+        \texttt{REMOVE\_PRODUCT})
+  \item All three stock-mutation types (add, remove, absolute adjust)
+  \item Over-deduction guard (insufficient-stock rejection)
+  \item Low-stock report inclusion
+  \item Full transaction-log inspection (type, performer, timestamp)
+  \item Role-based access-control enforcement
+  \item Unauthenticated-request rejection
+  \item Push-event delivery to subscribed clients
+\end{itemize}
+
+\begin{resultbox}
+\textbf{Result:}\quad \textcolor{successgreen}{\textbf{29 / 29 PASS}}
+\end{resultbox}
+
+\subsection{\texttt{ConcurrencyStressTest.java} --- Race-Condition Proof}
+
+Resets a chosen product to $N$ units, launches $T$ client threads each
+repeatedly calling \texttt{REMOVE\_STOCK(1)} until rejected, then reads the
+final stock level.
+
+\begin{lstlisting}[style=shell, numbers=none,
+  caption={Sample stress-test output ($N=50$, $T=15$)}]
+=== Warehouse Concurrency Stress Test ===
+productId=1  startStock=50  threads=15
+
+  successful deductions:   50
+  'insufficient' rejects:  15
+  other errors:             0
+  final stock:              0
+
+PASS: exactly 50 units deducted, no double-deduction, final stock 0.
+\end{lstlisting}
+
+The test confirms that under heavy parallel contention the invariant
+$\textit{successes} = N \;\wedge\; \textit{finalStock} = 0$
+always holds, and that no double-deduction ever occurs.
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{How to Run}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\subsection{Prerequisites}
+
+\begin{itemize}[leftmargin=1.4em]
+  \item JDK~17 or later (tested on OpenJDK~25)
+  \item JavaFX SDK~21.0.5 --- download from
+        \url{https://gluonhq.com/products/javafx/} and extract to
+        \texttt{lib/javafx-sdk-21.0.5/}
+  \item \texttt{sqlite-jdbc-3.46.1.3.jar}, \texttt{slf4j-api-2.0.13.jar},
+        and \texttt{slf4j-simple-2.0.13.jar} are already included in
+        \texttt{lib/}
+\end{itemize}
+
+\subsection{Build and Launch}
+
+\begin{lstlisting}[style=shell, numbers=none, caption={Step 1 --- Compile}]
+bash scripts/compile.sh
+\end{lstlisting}
+
+\begin{lstlisting}[style=shell, numbers=none, caption={Step 2 --- Start the server (Terminal 1)}]
+bash scripts/run-server.sh
+# First run: creates data/warehouse.db, seeds 2 users + 10 sample products
+# Output: "Warehouse server listening on port 5555"
+\end{lstlisting}
+
+\begin{lstlisting}[style=shell, numbers=none, caption={Step 3 --- Start the client (Terminal 2, repeat for multi-user demo)}]
+bash scripts/run-client.sh
+# Connection dialog: localhost:5555 / admin / admin123
+\end{lstlisting}
+
+\begin{lstlisting}[style=shell, numbers=none, caption={Step 4 (optional) --- Concurrency stress test}]
+bash scripts/run-stress.sh
+# Custom: bash scripts/run-stress.sh [productId] [startStock] [threads]
+\end{lstlisting}
+
+\subsection{Eclipse IDE Import}
+
+\begin{enumerate}[leftmargin=1.6em]
+  \item \textbf{File} $\to$ \textbf{Import} $\to$ \textbf{General} $\to$
+        \textbf{Existing Projects into Workspace} $\to$ select this folder.
+  \item The included \texttt{.project} and \texttt{.classpath} configure all
+        JAR dependencies automatically.
+  \item Add the following VM arguments to the client run configuration:
+\end{enumerate}
+
+\begin{lstlisting}[style=shell, numbers=none, basicstyle=\ttfamily\small]
+--module-path lib/javafx-sdk-21.0.5/lib
+--add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.base
+\end{lstlisting}
+
+\subsection{UI Navigation and Keyboard Shortcuts}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{View / Action} & \textbf{Description} & \textbf{Shortcut} \\
+\midrule
+Dashboard           & KPI cards, charts, live activity feed               & --- \\
+Inventory           & Product table; search, filter, CRUD, stock dialogs  & Ctrl+F / Ctrl+N \\
+Stock Operations    & Receive / ship / cycle-count panel                  & --- \\
+Low Stock Alerts    & Products at or below reorder level                  & --- \\
+Transaction History & Full audit log with colour-coded badges             & --- \\
+Refresh all         & Pull latest data from server                        & Ctrl+R \\
+Export CSV          & Save current inventory snapshot to CSV              & Ctrl+E \\
+\bottomrule
+\end{tabular}
+\caption{UI navigation and shortcuts}
+\end{table}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Mapping to CS6103 Advanced Java Concepts}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{lX}
+\toprule
+\textbf{Concept} & \textbf{Where It Appears} \\
+\midrule
+JavaFX GUI              & \texttt{InventoryClient} --- TableView, PieChart, BarChart, Dialog, FilteredList, CSS theming \\
+Java Sockets            & \texttt{InventoryServer} (ServerSocket), \texttt{ServerConnection} (Socket, ObjectIn/OutputStream) \\
+Multithreading          & Accept loop spawns one Thread(ClientHandler) per client; Platform.runLater() for UI marshalling \\
+JDBC + concurrency      & \texttt{DatabaseManager} (WAL, schema); \texttt{InventoryService} (ReentrantLock, setAutoCommit, commit/rollback) \\
+\midrule
+\multicolumn{2}{l}{\textit{Beyond the proposal}} \\
+\midrule
+Push-event broadcast    & Server broadcasts \texttt{Response.event()} to all subscribed clients after every mutation \\
+Salted password hashing & \texttt{PasswordHasher} --- SHA-256 with per-user random salt, constant-time verify \\
+Automated testing       & \texttt{ProposalVerify} (29 checks), \texttt{ConcurrencyStressTest} (race proof) \\
+\bottomrule
+\end{tabularx}
+\caption{Project proposal concepts mapped to implementation}
+\end{table}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Conclusion}
+% ─────────────────────────────────────────────────────────────────────────────
+
+The Warehouse Inventory Management System demonstrates the application of core Java
+concepts---TCP sockets, multithreading, JavaFX, and JDBC---in a cohesive,
+production-quality application. The two-layer concurrency strategy (per-product
+\texttt{ReentrantLock} combined with a JDBC transaction and a re-read of the
+current stock inside that transaction) correctly solves the classic ``last unit''
+race condition identified in the project proposal as the central correctness
+challenge.
+
+All 29 automated proposal-verification checks pass, and the concurrency stress test
+confirms that no double-deduction occurs under heavy parallel load across 15
+concurrent client threads.
+
+The full source code, scripts, and this report are available at:\\[4pt]
+\url{https://github.com/Bhavith-Chandra/warehouse-inventory-management}
+
+\end{document}
