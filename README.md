@@ -3,7 +3,7 @@
 **CS6103 — Introduction to Java, Spring 2026 — Final Project**
 Bhavith Chandra (Net ID `bc4066`, NYU ID `N13272568`)
 
-NOTE : Claude has been used to write this documentation and comment in the code respectively
+***NOTE : Claude has been used to write this documentation and comment in the code respectively***
 
 A networked, multi-user, JavaFX desktop application that lets warehouse
 staff view, add, update, and remove product stock in real time.
