@@ -259,11 +259,11 @@ Plus three things beyond the proposal that elevate it:
 ## 8. Sample stress-test run
 
 ```
-=== Warehouse Concurrency Stress Test ===
+ Warehouse Concurrency Stress Test 
 productId = 1, startStock = 100, threads = 10
 Stock reset to 100
 
-=== Results ===
+Results 
 elapsed:                 580 ms
 successful deductions:   100
 'insufficient' rejects:  10
